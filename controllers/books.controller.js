@@ -48,9 +48,8 @@ const findOne = async (req, res, next) => {
 
 const update = async (req, res, next) => {
   try {
-    const book = await Book.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const book = await Book.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
     if (!book) throw new AppError(404, "Book with provided ID not found");
-    await book.save();
     res.status(200).json({
       success: true,
       message: "Book updated successfully",

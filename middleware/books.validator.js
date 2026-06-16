@@ -7,7 +7,7 @@ const booksValidator = (type) => (req, res, next) => {
       const newBook = req.body;
       if (!newBook.title) throw new AppError(400, "Book must have a title");
       if (!newBook.author) throw new AppError(400, "Book must have an author");
-      if (!newBook.price) throw new AppError(400, "Book must have a price tag");
+      if (newBook.price === undefined) throw new AppError(400, "Book must have a price tag");
       next();
     } else {
       const newBook = req.body;
