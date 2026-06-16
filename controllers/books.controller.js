@@ -48,12 +48,13 @@ const findOne = async (req, res, next) => {
 
 const update = async (req, res, next) => {
   try {
-    const book = await Book.findOneAndUpdate({ _id: req.params.id }, req.body);
+    const book = await Book.findByIdAndUpdate(req.params.id, req.body, { new: true });
     if (!book) throw new AppError(404, "Book with provided ID not found");
     await book.save();
     res.status(200).json({
       success: true,
-      message: "Book updated successfully"
+      message: "Book updated successfully",
+      data: book
     });
   } catch (err) {
     next(err);
@@ -62,7 +63,7 @@ const update = async (req, res, next) => {
 
 const remove = async (req, res, next) => {
   try {
-    const book = await Book.findOneAndDelete(req.body);
+    const book = await Book.findOneAndDelete({ _id: req.params.id });
     if (!book) throw new AppError(404, "Book with provided ID not found");
     res.status(204).end();
   } catch (err) {

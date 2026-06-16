@@ -1,6 +1,7 @@
 import express from 'express'
 import cors from 'cors'
-import logger from './middleware/logger.middleware.js'
+import morgan from 'morgan'
+import helmet from 'helmet'
 import errorHandler from './middleware/error.middleware.js'
 import { connectDB } from './config/db.js'
 import booksRouter from './routes/books.routes.js'
@@ -8,9 +9,10 @@ import booksRouter from './routes/books.routes.js'
 const app = express()
 await connectDB()
 
-app.use(express.json())
+app.use(express.json({ limit: '10kb' }))
 app.use(cors())
-app.use(logger)
+app.use(morgan('dev'))
+app.use(helmet())
 
 app.get('/api/health', (req, res) => {
     res.status(200).json({
